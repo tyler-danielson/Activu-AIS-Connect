@@ -1,0 +1,85 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile QSD Plugin",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command": "echo Update QSD Plugin",
+            "windows": {
+                "command": ".\\plugincompile\\copy_plugin.cmd ${workspaceFolder} ${workspaceFolderBasename}",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [ "/c"  ]
+                    }
+                }
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [],
+            "dependsOn": [ "--" ]
+        },
+        {
+            "label": "--",
+            "type": "shell",
+            "group": "build",
+            "command": "echo Compile Plugin",
+            "windows": {
+                "command": ".\\plugincompile\\PLUGCC.exe ${workspaceFolderBasename} ${workspaceFolder}\\plugin.lua",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [ "/c"  ]
+                    }
+                }
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [],
+            "dependsOn": [ "-" ]
+        },
+        {
+            "label": "-",
+            "type": "shell",
+            "group": "build",
+            "command": "echo Version",
+            "windows": {
+                "command": "sh .\\plugincompile\\compile_plugin.sh ${input:ver_inc}",
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [ "/c"  ]
+                    }
+                }
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+    ],
+    "inputs": [
+        {
+            "id": "ver_inc",
+            "description": "Version Inc:",
+            "type": "pickString",
+            "options": [
+                "ver_maj",
+                "ver_min",
+                "ver_fix",
+                "ver_dev",
+                "ver_none",
+                "CANCEL"
+            ],
+            "default": "ver_dev"
+        },
+    ]
+}

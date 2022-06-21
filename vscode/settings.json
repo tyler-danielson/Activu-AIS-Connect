@@ -1,0 +1,14 @@
+{
+  "gitlens.keymap": "alternate",
+  "team.showWelcomeMessage": false,
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true
+  },
+  "editor.renderControlCharacters": true,
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 500,
+  "editor.tabSize": 2
+}
