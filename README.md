@@ -1,32 +1,48 @@
 # BasePlugin
 
-This is a template plugin that you can download with some pre-written Lua code to get you started.
+Use this plugin to connect to and control Activu Vis|Abiilty System via Activu Interface Server (AIS).
 
-## PluginCompile
+## Prerequisites
 
-This is a submodule built for VS Code. Please note it is not intended to be used for any other source code editors.
+Before you can configure the plugin, ensure that Vis|Ability is configuredand reachable on your network. Also ensure that AIS installed and configured. QSC recommends that you configure a static IP address for the device, as DHCP addresses can change.
 
-The submodule will take the individual source Lua files in your local repo, compile them into a singular qplug file, and auto increment the desired octet of the BuildVersion.
-For first time builds, it will auto-generate an UUID for you plugin as well.
+Refer to the Activu SDK Guide for help with setting up and connecting to AIS.
 
-Make sure to map a keyboard shortcut by navigating to File>Preferences>Keyboard Shortcuts. Type in "Tasks" and assign the desired shortcut to the Tasks: Run Build Task command
+## Connecting to the Device
+To begin using the plugin, drag it into the schematic and configure its Properties. Then, press F5 to save your design to the Core and run it.
 
-### Build Arguments
+In the plugin's Setup tab:
 
-<ver_maj> : increments the first octet of BuildVersion to denote a major version change
+	Type the IP Address of the device.
 
-<ver_min> : increments the second octet of BuildVersion to denote a minor version change
+	Type the Port Number of the device.
+	Default: 59095
 
-<ver_fix> : increments the third octet of BuildVersion to denote a bugfix
-
-<ver_dev> : increments the fourth octet of BuildVersion to denote a new development version
-
-< CANCEL > : cancels the build process
+	Specify your AIS Username and Password credentials for the device, and then press Enter.
   
-Please note that the public version (PluginVersion) only displays first and second octet. The second octets are intended for developer use and version tracking.
+The plugin will automatically attempt a connection. If you see "OK" status, you are successfully connected to the device. If you see a "Fault" error, check to make sure you entered the correct parameters.
+
+##Properties
+####Connection Test Interval
+Set the amount of time, in minutes, between login status checks with the AIS. (Default 5 minutes)
+
+####Show Debug
+Select 'Yes' to show the Debug Output window. For details, see the Debug Output topic in the Q-SYS Help.
+
+##Controls
+###Setup
+####IP Address
+The IP address of AIS
+
+####Username
+This is the same username as for the device's configurator.
+
+####Password
+This is the same password as for the device's configurator.
+
+####Status
+Displays the current connection status.
 
 ## Support
 
-If you have any questions or concerns with this template, please contact qsyscontrolfeedback@qsc.com
-
-Please note that QSC does not support plugins authored by third party developers or companies.
+If you have any questions or concerns with this template, please contact tyler.danielson@activu.com
