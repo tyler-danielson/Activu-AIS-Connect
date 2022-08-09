@@ -13,34 +13,34 @@ To begin using the plugin, drag it into the schematic and configure its Properti
 
 In the plugin's Setup tab:
 
-	Type the IP Address of the device.
+Type the IP Address of the device.
 
-	Type the Port Number of the device.
-	Default: 59095
+Type the Port Number of the device.
+Default: 59095
 
-	Specify your AIS Username and Password credentials for the device, and then press Enter.
+Specify your AIS Username and Password credentials for the device, and then press Enter.
   
 The plugin will automatically attempt a connection. If you see "OK" status, you are successfully connected to the device. If you see a "Fault" error, check to make sure you entered the correct parameters.
 
 ##Properties
-####Connection Test Interval
+Connection Test Interval
 Set the amount of time, in minutes, between login status checks with the AIS. (Default 5 minutes)
 
-####Show Debug
+##Show Debug
 Select 'Yes' to show the Debug Output window. For details, see the Debug Output topic in the Q-SYS Help.
 
 ##Controls
 ###Setup
-####IP Address
+##IP Address
 The IP address of AIS
 
-####Username
+##Username
 This is the same username as for the device's configurator.
 
-####Password
+##Password
 This is the same password as for the device's configurator.
 
-####Status
+##Status
 Displays the current connection status.
 
 ## Support
