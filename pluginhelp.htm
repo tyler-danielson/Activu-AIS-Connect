@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en-us" xml:lang="en-us" data-mc-search-type="Stem" data-mc-help-system-file-name="index.xml" data-mc-path-to-help-system="../" data-mc-target-type="WebHelp2" data-mc-runtime-file-type="Topic;Default" data-mc-preload-images="false" data-mc-in-preview-mode="false" data-mc-toc-path="Plugins|Activu">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Activu Vis|Ability Interface</title>
+        <link href="../Skins/Default/Stylesheets/Slideshow.css" rel="stylesheet" />
+        <link href="../Skins/Default/Stylesheets/TextEffects.css" rel="stylesheet" />
+        <link href="../Skins/Default/Stylesheets/Topic.css" rel="stylesheet" />
+        <link href="../Skins/Default/Stylesheets/Components/Styles.css" rel="stylesheet" />
+        <link href="../Skins/Default/Stylesheets/Components/Tablet.css" rel="stylesheet" />
+        <link href="../Skins/Default/Stylesheets/Components/Mobile.css" rel="stylesheet" />
+        <link href="PluginStyles.css" rel="stylesheet" />
+        <link href="shaded rows_plugin.css" rel="stylesheet" />
+        <script src="../Resources/Scripts/jquery.min.js">
+        </script>
+        <script src="../Resources/Scripts/require.min.js" defer="defer">
+        </script>
+        <script src="../Resources/Scripts/require.config.js" defer="defer">
+        </script>
+        <script src="../Resources/Scripts/foundation.min.js" defer="defer">
+        </script>
+        <script src="../Resources/Scripts/plugins.min.js" defer="defer">
+        </script>
+        <script src="../Resources/Scripts/MadCapAll.js" defer="defer">
+        </script>
+    </head>
+    <body>
+        <div role="main" id="mc-main-content">
+            <h1 data-mc-autonum=""><span class="autonumber"><span></span></span>Activu Vis|Ability</h1>
+            <p>UUse this plugin to connect to and control Activu Vis|Abiilty System via Activu Interface Server (AIS).</p>
+            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>See the <a href="https://www.activu.com/" target="_blank">Activu website</a> for product information and documentation.</p>
+            <ul>
+                <li value="1"><a href="#Compatib" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Compatibility</a>
+                </li>
+                <li value="2"><a href="#Prerequi" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Prerequisites</a>
+                </li>
+                <li value="3"><a href="#Connecti" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Connecting to the Device</a>
+                </li>
+                <li value="4"><a href="#Properti" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Properties</a>
+                </li>
+                <li value="5"><a href="#Controls" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Controls</a>
+                </li>
+                <li value="6"><a href="#Control" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Control Pins</a>
+                </li>
+            </ul>
+            <h2 data-mc-autonum=""><span class="autonumber"><span></span></span><a name="Compatib"></a>Compatibility</h2>
+            <p>The plugin is compatible with Q-SYS Designer version 7.2 and above, and was tested with Activu Interface Server 6.1</p>
+            <h2 data-mc-autonum=""><span class="autonumber"><span></span></span><a name="Prerequi"></a>Prerequisites</h2>
+            <p>Before you can configure the plugin, ensure that Vis|Ability is configuredand reachable on your network. Also ensure that AIS installed and configured. QSC recommends that you configure a static IP address for the device, as DHCP addresses can change.</p>
+			  <p>Refer to the <a href="#" target="_blank">Activu SDK Guide</a> for help with setting up and connecting to AIS.</p>
+            <p class="note" data-mc-autonum="&lt;b&gt;Note: &lt;/b&gt;"><span class="autonumber"><span><b>Note: </b></span></span>The Remote control API credentials (used by the plugin) are the tied to a Activu User Account and privelages. Go to Security &gt;&#160;Passwords to set this password.</p>
+            <h2 data-mc-autonum=""><span class="autonumber"><span></span></span><a name="Connecti"></a>Connecting to the Device</h2>
+            <p>To begin using the plugin, drag it into the schematic and configure its <a href="#Properti" class="ParagraphTextOnly MCXref xref xrefParagraphTextOnly">Properties</a>. Then, press F5 to save your design to the Core and run it.</p>
+            <p>In the plugin's Setup tab:</p>
+            <ol>
+                <li value="1">Type the <span class="GUI_Callout">IP&#160;Address</span> of the device.</li>
+				<li value="1">Type the <span class="GUI_Callout">Port&#160;Number</span> of the device. <p class="note">Default: 59095</p></li>
+                <li value="2">Specify your AIS <span class="GUI_Callout">Username</span> and <span class="GUI_Callout">Password</span> credentials for the device, and then press Enter.</li>
+            </ol>
+            <p>The plugin will automatically attempt a connection. If you see "OK" status, you are successfully connected to the device. If you see a "Fault"&#160;error, check to make sure you entered the correct parameters.</p>
+            <h2 data-mc-autonum=""><span class="autonumber"><span></span></span><a name="Properti"></a>Properties</h2>
+            <h4 class="BridgeHead">Connection Test Interval</h4>
+            <p>Set the amount of time, in minutes, between login status checks with the AIS. (Default 5 minutes)</p>
+            <h4 class="BridgeHead">Show Debug</h4>
+            <p>Select 'Yes' to show the Debug Output window. For details, see the Debug Output topic in the Q-SYS Help.</p>
+            <h2 data-mc-autonum=""><span class="autonumber"><span></span></span><a name="Controls"></a>Controls</h2>
+            <h3 data-mc-autonum=""><span class="autonumber"><span></span></span>Setup</h3>
+            <h4 class="BridgeHead">IP&#160;Address</h4>
+            <p>The IP&#160;address of the Barco device.</p>
+            <h4 class="BridgeHead">Username</h4>
+            <p>This is the same username as for the device's web configurator.</p>
+            <h4 class="BridgeHead">Password</h4>
+            <p>This is the same password as for the device's web configurator.</p>
+            <h4 class="BridgeHead">Status</h4>
+            <p>Displays the current connection status:</p>
+            <ul>
+                <li value="1"><span style="color: #228b22;">OK</span>: Plugin is connected to the unit</li>
+                <li value="2"><span style="color: #ff0000;">FAULT</span>: Check the credentials to connect to the device.</li>
+                <li value="3"><span style="color: #ff0000;">MISSING</span>: No device is found at the specified IP address.</li>
+            </ul>
+            <h3 data-mc-autonum=""><span class="autonumber"><span></span></span>Buttons</h3>
+            <h4 class="BridgeHead">Connect</h4>
+            <p>Enable or Disable connection to AIS</p>
+			<h4 class="BridgeHead">Reconnect</h4>
+            <p>Resends login string to AIS.</p>
+			<h4 class="BridgeHead">AIS Send</h4>
+			<p>Input string to send to AIS. Hit enter to send. List of available commands can be found on the Activu SDK User Guide</p>
+			<h4 class="BridgeHead">Feedback</h4>
+			<p>Text response of feedback string from the Activu Interface Server</p>
+			<h4 class="BridgeHead">Debug</h4>
+			<p>A feed of each sent and received feedback from AIS</p>
+			<h4 class="BridgeHead">CLEAR</h4>
+			<p>Clears the Debug window</p>
+            <h2 data-mc-autonum=""><span class="autonumber"><span></span></span><a name="Control"></a>Control Pins</h2>
+            <table style="mc-table-style: url('shaded rows_plugin.css');caption-side: top;" class="TableStyle-shaded_rows_plugin" cellspacing="0">
+                <col class="TableStyle-shaded_rows_plugin-Column-Column1">
+                </col>
+                <col class="TableStyle-shaded_rows_plugin-Column-Column1">
+                </col>
+                <col class="TableStyle-shaded_rows_plugin-Column-Column1">
+                </col>
+                <col class="TableStyle-shaded_rows_plugin-Column-Column1">
+                </col>
+                <col class="TableStyle-shaded_rows_plugin-Column-Column1">
+                </col>
+                <thead>
+                    <tr class="TableStyle-shaded_rows_plugin-Head-Header1">
+                        <th class="TableStyle-shaded_rows_plugin-HeadE-Column1-Header1">
+                            <p>Pin Name</p>
+                        </th>
+                        <th class="TableStyle-shaded_rows_plugin-HeadE-Column1-Header1" style="text-align: center;">
+                            <p>Value</p>
+                        </th>
+                        <th class="TableStyle-shaded_rows_plugin-HeadE-Column1-Header1" style="text-align: center;">
+                            <p>String</p>
+                        </th>
+                        <th class="TableStyle-shaded_rows_plugin-HeadE-Column1-Header1" style="text-align: center;">
+                            <p>Position</p>
+                        </th>
+                        <th class="TableStyle-shaded_rows_plugin-HeadD-Column1-Header1" style="text-align: center;">
+                            <p>Pins Available</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body1">
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body1" colspan="5">
+                            <p>Buttons</p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body2">
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body2" colspan="5">
+                            <p class="P1" data-mc-autonum=""><span class="autonumber"><span></span></span>Button <i>n</i></p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body1">
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1">
+                            <p class="P2" data-mc-autonum=""><span class="autonumber"><span></span></span>Connected</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1" style="text-align: center;">
+                            <p>0</p>
+                            <p>1</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1" style="text-align: center;">
+                            <p>false</p>
+                            <p>true</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1" style="text-align: center;">
+                            <p>0</p>
+                            <p>1</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body1" style="text-align: center;">
+                            <p style="text-align: center;">Output</p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body1">
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1">
+                            <p class="P2" data-mc-autonum=""><span class="autonumber"><span></span></span>Status</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1" colspan="3">
+                            <p style="text-align: center;">(text)</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body1">
+                            <p style="text-align: center;">Output</p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body2">
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body2" colspan="5">
+                            <p>Connection Setup</p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body1">
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1">
+                            <p class="P1" data-mc-autonum=""><span class="autonumber"><span></span></span>IP&#160;Address</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1" colspan="3">
+                            <p style="text-align: center;">(text)</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body1">
+                            <p style="text-align: center;">Input / Output</p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body2">
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body2">
+                            <p class="P1" data-mc-autonum=""><span class="autonumber"><span></span></span>Password</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body2" colspan="3">
+                            <p style="text-align: center;">(text)</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body2">
+                            <p style="text-align: center;">Input / Output</p>
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-shaded_rows_plugin-Body-Body1">
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1">
+                            <p class="P1" data-mc-autonum=""><span class="autonumber"><span></span></span>Username</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyE-Column1-Body1" colspan="3">
+                            <p style="text-align: center;">(text)</p>
+                        </td>
+                        <td class="TableStyle-shaded_rows_plugin-BodyD-Column1-Body1">
+                            <p style="text-align: center;">Input / Output</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h6 data-mc-autonum="1. "><span class="autonumber"><span>1. </span></span><a name="Use"></a>Use this control pin to enable or disable the plugin in your design. When Disabled is set to enabled (value of 1), the Connection Status changes to "Not Present - Disabled".</h6>
+        </div>
+        <MadCap:pageFooter class="">
+            <div style="width: 100%;position: relative; border-top: solid 1px #c2c2c2; margin-top: 15px; padding-top: 8px">
+                <p style="text-align: center;"><a href="https://www.qsc.com/resources/software-and-firmware/" target="_blank">Software&#160;and&#160;Firmware</a> | <a href="https://www.qsc.com/resources/" target="_blank">Resources</a> | <a href="https://qscprod.force.com/selfhelpportal/s/" target="_blank">QSC&#160;Self&#160;Help&#160;Portal</a> | <a href="mailto:QSysHelpFeedback@qsc.com?subject=Q-SYS Help Feedback" target="_blank">Q-SYS Help Feedback</a></p>
+                <p class="legal">Copyright © 2019 QSC, LLC. Click <a href="https://q-syshelp.qsc.com/#Legal.htm" target="_blank">here</a> for trademark and other legal notices.</p>
+                <p style="text-align: center;"><a href="https://www.qsc.com/" target="_blank"><img src="qsclogogrey_40_reduced.png" /></a>
+                </p>
+            </div>
+        </MadCap:pageFooter>
+    </body>
+</html>
