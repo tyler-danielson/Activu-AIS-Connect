@@ -6,8 +6,8 @@
 -- Information block for the plugin
 PluginInfo = {
   Name = "Activu AIS Connect",
-  Version = "0.9",
-  BuildVersion = "1.0.0.128",
+  Version = "1.0",
+  BuildVersion = "1.1.0.0",
   Id = "Activu Connection Block",
   Author = "Activu",
   Description = "A plugin to interface with Activu Interface Server.  Written by Tyler Danielson for Activu Corp."  
@@ -72,13 +72,6 @@ function GetProperties()
   return props
 end
 
--- Optional function to define pins on the plugin that are not connected to a Control
-function GetPins(props)
-  local pins = {}
-  
-  return pins
-end
-
 -- Optional function to update available properties when properties are altered by the user
 function RectifyProperties(props)
   if props.plugin_show_debug.Value == false then 
@@ -87,37 +80,23 @@ function RectifyProperties(props)
   return props
 end
 
--- Optional function to define components used within the plugin
-function GetComponents(props)
-  local components = {}
-  return components
-end
-
--- Optional function to define wiring of components used within the plugin
-function GetWiring(props)
-  local wiring = {}
-  --[[table.insert( wiring, { "Audio Output", "main_mixer Output 1" } )]]--
-  return wiring
-end
-
 -- Defines the Controls used within the plugin
 function GetControls(props)
-  local ctrls = {}
-  table.insert(ctrls, {Name = "ais_reconnect",ControlType = "Button",ButtonType = "Trigger",PinStyle = "Output",UserPin = true})--,Icon = "refresh"})
-  table.insert(ctrls, {Name = "connect_disabled",ControlType = "Button",ButtonType = "Toggle",Color = "Red",Text = "Disabled"})
-  table.insert(ctrls, {Name = "IP_Address",ControlType = "Text"})
-  table.insert(ctrls,{Name = "Connected",ControlType = "Indicator",IndicatorType = "Led",UserPin = true,PinStyle = "Output",Count = 1})
-  table.insert(ctrls, {Name = "Port",ControlType = "Knob",ControlUnit = "Integer",Min = 0,Max = 65535})
-  table.insert(ctrls, {Name = "Username",ControlType = "Text"})
-  table.insert(ctrls, {Name = "Password",ControlType = "Text"})
-  table.insert(ctrls, {Name = "Status",ControlType = "Indicator",IndicatorType = "Status"})
-  table.insert(ctrls, {Name = "SendString",ControlType = "Text",PinStyle = "Input",UserPin = true})
-  table.insert(ctrls, {Name = "feedback",ControlType = "Indicator",IndicatorType = "Text",PinStyle = "Output",UserPin = true})
-  table.insert(ctrls, {Name = "debug",ControlType = "Text"})
-  table.insert(ctrls, {Name = "ClearFeedback",ControlType = "Button",ButtonType = "Trigger",Text = "Clear"})
-  table.insert(ctrls,{Name ="Queue",ControlType = "Text",UserPin = true,PinStyle = "Output",Count = 1})
-  table.insert(ctrls,{Name ="ClearQueue",ControlType = "Button",ButtonType = "Trigger",UserPin = true,PinStyle = "Both",Count = 1})
-  return ctrls
+  local controls = {}
+  table.insert(controls, {Name = "ais_reconnect",ControlType = "Button",ButtonType = "Trigger",PinStyle = "Output",UserPin = true})--,Icon = "refresh"})
+  table.insert(controls, {Name = "connect_disabled",ControlType = "Button",ButtonType = "Toggle",Color = "Red",Text = "Disabled"})
+  table.insert(controls, {Name = "IPAddress",ControlType = "Text"})
+  table.insert(controls, {Name = "Port",ControlType = "Knob",ControlUnit = "Integer",Min = 0,Max = 65535})
+  table.insert(controls, {Name = "Username",ControlType = "Text"})
+  table.insert(controls, {Name = "Password",ControlType = "Text"})
+  table.insert(controls, {Name = "Status",ControlType = "Indicator",IndicatorType = "Status",PinStyle = "Output",UserPin = true})
+  table.insert(controls, {Name = "SendString",ControlType = "Text",PinStyle = "Input",UserPin = true})
+  table.insert(controls, {Name = "feedback",ControlType = "Indicator",IndicatorType = "Text",PinStyle = "Output",UserPin = true})
+  table.insert(controls, {Name = "debug",ControlType = "Text"})
+  table.insert(controls, {Name = "ClearFeedback",ControlType = "Button",ButtonType = "Trigger",Text = "Clear"})
+  table.insert(controls,{Name ="Queue",ControlType = "Text",UserPin = true,PinStyle = "Output",Count = 1})
+  table.insert(controls,{Name ="ClearQueue",ControlType = "Button",ButtonType = "Trigger",UserPin = true,PinStyle = "Both",Count = 1})
+  return controls
 end
 
 --Layout of controls and graphics for the plugin UI to display
@@ -147,10 +126,10 @@ function GetControlLayout(props)
     --*********************
     table.insert(graphics,{Type = "GroupBox",Text = "Connection Setup",CornerRadius = 8,StrokeColor = Colors.Yellow,Fill = Colors.DarkGrey,StrokeWidth = 1,Position = {COMMON_MARGIN,69},Size = {185,65},FontSize = 10})
     table.insert(graphics,{Type = "Text",Text = "AIS IP Address:",Position = {COMMON_MARGIN+5,91},Size = {74,16},FontSize = 9,HTextAlign = "Right"})
-    layout["IP_Address"] = {PrettyName = "Input IP Address of Activu ASM",Style = "Text",Position = {89,91},Size = {90,16},FontSize = 10,HTextAlign = "Left"}
+    layout["IPAddress"] = {PrettyName = "Input IP Address of Activu ASM",Style = "Text",Position = {89,91},Size = {90,16},FontSize = 10,HTextAlign = "Left"}
     table.insert(graphics,{Type = "Text",Text = "Port #:",Position = {COMMON_MARGIN+5,112},Size = {74,16},FontSize = 10,HTextAlign = "Right"})
     layout["Port"] = {PrettyName = "Default: 59095",ControlType = "Knob",ControlUnit = "Integer",Min = 0,Max = 65535,Value = 59095, Position = {89,112},Size = {40,16},FontSize = 10,HTextAlign = "Left"}
-    layout["Connected"]={PrettyName="Device~Connected",Style="LED",Color=Colors.Green,OffColor=Colors.Black,UnlinkOffColor=true,Position={163,112},Size={16,16},CornerRadius=8}
+  
   
     --*********************
     --* AIS Connect Block *
@@ -198,7 +177,7 @@ if Controls then
   --********************************************************************************
   --* Aliases
   --********************************************************************************
-  editIPaddr = Controls.IP_Address
+  editIPaddr = Controls.IPAddress
   editAISPort = Controls.Port
   btnDisabled = Controls.connect_disabled
   btnReconnect = Controls.ais_reconnect
@@ -210,7 +189,6 @@ if Controls then
   editStatus = Controls.Status
   editFeedback = Controls.feedback
   intCheckConnect = Properties["Connection Test Inteval"]
-  ledConnected = Controls.Connected
   btnClear = Controls.ClearQueue
   btnDisplay = Controls.Queue
   
@@ -218,7 +196,6 @@ if Controls then
   --********************************************************************************
   --* Constants
   --********************************************************************************
-  IP_PATTERN       = "[012]?%d?%d+%.[012]?%d?%d+%.[012]?%d?%d+%.[012]?%d?%d"
   INCORRECT_PASS = "-13"
   INC_PASS_RESPONSE = "Incorrect Password"
   USER_LOCKED = "-10"
@@ -317,29 +294,6 @@ if Controls then
   
   
   --********************************************************************************
-  --* Function: SetConnectedLED(color)
-  --* Description: Set indicator LED to given color if color valid
-  --* credit:  Chris Lord (QSC)
-  --********************************************************************************
-  function SetConnectedLED(color)
-    --print("LEDState:", color, CONN_COLOR[color])
-    if CONN_COLOR[color] == 1 then                          --active
-      ledConnected.Color = RGBToStr(Colors.Red)              --red
-      ledConnected.Boolean = true
-    elseif CONN_COLOR[color] == 2 then                      --active
-      ledConnected.Color = RGBToStr(Colors.Yellow)           --yellow
-      ledConnected.Boolean = true
-    elseif CONN_COLOR[color] == 3 then                      --active
-      ledConnected.Color = RGBToStr(Colors.Green)            --green
-      ledConnected.Boolean = true
-    else                                                    --inactive and not configured
-      ledConnected.Color = RGBToStr(Colors.CtlBkgnd)         --CtlBkgnd
-      ledConnected.Boolean = false
-    end
-  end
-  
-  
-  --********************************************************************************
   --* Function: SendCommand(commandString)
   --* Description: Send string command to AIS
   --********************************************************************************
@@ -359,7 +313,6 @@ if Controls then
   function TCPConnect()
     local IPAddress = editIPaddr.String
     local port = editAISPort.Value
-    SetConnectedLED("RED")
     ClearQueue()
     --if CheckIPValid(IPAddress) then
     if #IPAddress > 0 then
@@ -388,7 +341,7 @@ if Controls then
         local username = editAISUser.String
         local password = editAISPW.String
         local loginString = "Login," .. username .. "," .. password
-        ReportStatus("INITIALIZING","Logging In")
+        ReportStatus("FAULT","Logging In")
         SendCommand(loginString)
       end
     end
@@ -497,7 +450,6 @@ if Controls then
     InputValid(editIPaddr,true)
     InputValid(editAISPort,true)
     Debug("TCP socket is connected")
-    SetConnectedLED("GREEN")
     if not btnDisabled.Boolean then 
       AIS_Login()
     end
@@ -508,8 +460,7 @@ if Controls then
   --* Description: What to do when TCP is Reconnecting
   --********************************************************************************
   function ReconectHandler(Activu)
-    SetConnectedLED("YELLOW")
-    ReportStatus("INITIALIZING","TCP Connection Reconnecting")
+    ReportStatus("FAULT","TCP Connection Reconnecting")
     Debug("TCP socket is reconnecting")
   end
   
@@ -519,7 +470,6 @@ if Controls then
   --********************************************************************************
   function ClosedHandler(Activu)
     ReportStatus("FAULT","TCP Connection Closed")
-    SetConnectedLED("RED")
     Debug("TCP socket was closed by the remote end")
   end
   
@@ -529,7 +479,6 @@ if Controls then
   --********************************************************************************
   function ErrorHandler(Activu,err)
     ReportStatus("FAULT","Connect Error",err)
-    SetConnectedLED("RED")
     Debug("TCP socket had an error: "..err)
   end
   
@@ -538,7 +487,6 @@ if Controls then
   --* Description: What to do when TCP times out
   --********************************************************************************
   function TimeoutHandler(Activu,err)
-    SetConnectedLED("RED")
     ReportStatus("FAULT","TCP Connection Timeout")
     Debug("TCP socket timed out "..err)
   end
@@ -667,21 +615,6 @@ if Controls then
   
   
   --********************************************************************************
-  --* Event Handlers for Controls
-  --********************************************************************************
-  
-  --********************************************************************************
-  --* Function: Event Handler for Send String input block
-  --* Description: Send string from AIS send block to AIS
-  --********************************************************************************
-  editSendStr.EventHandler = function(obj)
-    if obj.String ~= " " then
-      SendCommand(obj.String)
-    end
-  end
-  
-  
-  --********************************************************************************
   --* Function: disableConnect(object)
   --* Description: Reset number of loginAttempts and Reconnect to AIS
   --********************************************************************************
@@ -715,13 +648,38 @@ if Controls then
     end
   end
   
+  --********************************************************************************
+  --* Function: Event Handler for Send String input block
+  --* Description: Send string from AIS send block to AIS
+  --********************************************************************************
+  function StringBlockSend(obj)
+    if obj.String ~= " " then
+      SendCommand(obj.String)
+    end
+  end
+  
+  --********************************************************************************
+  --* Event Handlers for Controls
+  --********************************************************************************
+  
+  editIPaddr.EventHandler = TCPConnect
+  editAISPort.EventHandler = TCPConnect
+  btnReconnect.EventHandler = AIS_Login
+  editAISUser.EventHandler = AIS_Login
+  editAISPW.EventHandler = AIS_Login
+  btnClrFb.EventHandler = ClearFeedback
+  btnDisabled.EventHandler = disableConnect
+  timer.EventHandler = ConnectCheck
+  btnClear.EventHandler = ClearQueue
+  QueueTimer.EventHandler  = Queue
+  editSendStr.EventHandler = StringBlockSend
+  
   
   --********************************************************************************
   --* Function: Initialize()
   --* Description: Initialization code for the plugin
   --********************************************************************************
   function Initialize()
-    ReportStatus("NOTPRESENT","Connection Data Missing")
     IPAddress = editIPaddr.String
     Port = editAISPort.Value
     Activu:Connect(IPAddress,Port)
@@ -734,18 +692,8 @@ if Controls then
   
     timer:Start(1)
   
-    editIPaddr.EventHandler = TCPConnect
-    editAISPort.EventHandler = TCPConnect
-    btnReconnect.EventHandler = AIS_Login
-    editAISUser.EventHandler = AIS_Login
-    editAISPW.EventHandler = AIS_Login
-    btnClrFb.EventHandler = ClearFeedback
-    btnDisabled.EventHandler = disableConnect
-    timer.EventHandler = ConnectCheck
   
-    QueueTimer.EventHandler  = Queue
-    QueueTimer:Start(1)--Time.Value)
-    btnClear.EventHandler = ClearQueue
+    QueueTimer:Start(0.5)--Time.Value)
   
   
     Notifications.Subscribe( NOTIFICATIONS_LABEL, RXHandler )

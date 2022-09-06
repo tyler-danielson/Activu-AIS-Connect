@@ -3,7 +3,7 @@
 --********************************************************************************
 --* Aliases
 --********************************************************************************
-editIPaddr = Controls.IP_Address
+editIPaddr = Controls.IPAddress
 editAISPort = Controls.Port
 btnDisabled = Controls.connect_disabled
 btnReconnect = Controls.ais_reconnect
@@ -15,7 +15,6 @@ editSendStr = Controls.SendString
 editStatus = Controls.Status
 editFeedback = Controls.feedback
 intCheckConnect = Properties["Connection Test Inteval"]
-ledConnected = Controls.Connected
 btnClear = Controls.ClearQueue
 btnDisplay = Controls.Queue
 
@@ -23,7 +22,6 @@ btnDisplay = Controls.Queue
 --********************************************************************************
 --* Constants
 --********************************************************************************
-IP_PATTERN       = "[012]?%d?%d+%.[012]?%d?%d+%.[012]?%d?%d+%.[012]?%d?%d"
 INCORRECT_PASS = "-13"
 INC_PASS_RESPONSE = "Incorrect Password"
 USER_LOCKED = "-10"
@@ -122,29 +120,6 @@ end
 
 
 --********************************************************************************
---* Function: SetConnectedLED(color)
---* Description: Set indicator LED to given color if color valid
---* credit:  Chris Lord (QSC)
---********************************************************************************
-function SetConnectedLED(color)
-  --print("LEDState:", color, CONN_COLOR[color])
-  if CONN_COLOR[color] == 1 then                          --active
-    ledConnected.Color = RGBToStr(Colors.Red)              --red
-    ledConnected.Boolean = true
-  elseif CONN_COLOR[color] == 2 then                      --active
-    ledConnected.Color = RGBToStr(Colors.Yellow)           --yellow
-    ledConnected.Boolean = true
-  elseif CONN_COLOR[color] == 3 then                      --active
-    ledConnected.Color = RGBToStr(Colors.Green)            --green
-    ledConnected.Boolean = true
-  else                                                    --inactive and not configured
-    ledConnected.Color = RGBToStr(Colors.CtlBkgnd)         --CtlBkgnd
-    ledConnected.Boolean = false
-  end
-end
-
-
---********************************************************************************
 --* Function: SendCommand(commandString)
 --* Description: Send string command to AIS
 --********************************************************************************
@@ -164,7 +139,6 @@ end
 function TCPConnect()
   local IPAddress = editIPaddr.String
   local port = editAISPort.Value
-  SetConnectedLED("RED")
   ClearQueue()
   --if CheckIPValid(IPAddress) then
   if #IPAddress > 0 then
@@ -193,7 +167,7 @@ function AIS_Login()
       local username = editAISUser.String
       local password = editAISPW.String
       local loginString = "Login," .. username .. "," .. password
-      ReportStatus("INITIALIZING","Logging In")
+      ReportStatus("FAULT","Logging In")
       SendCommand(loginString)
     end
   end
@@ -302,7 +276,6 @@ function ConnectHandler(Activu)
   InputValid(editIPaddr,true)
   InputValid(editAISPort,true)
   Debug("TCP socket is connected")
-  SetConnectedLED("GREEN")
   if not btnDisabled.Boolean then 
     AIS_Login()
   end
@@ -313,8 +286,7 @@ end
 --* Description: What to do when TCP is Reconnecting
 --********************************************************************************
 function ReconectHandler(Activu)
-  SetConnectedLED("YELLOW")
-  ReportStatus("INITIALIZING","TCP Connection Reconnecting")
+  ReportStatus("FAULT","TCP Connection Reconnecting")
   Debug("TCP socket is reconnecting")
 end
 
@@ -324,7 +296,6 @@ end
 --********************************************************************************
 function ClosedHandler(Activu)
   ReportStatus("FAULT","TCP Connection Closed")
-  SetConnectedLED("RED")
   Debug("TCP socket was closed by the remote end")
 end
 
@@ -334,7 +305,6 @@ end
 --********************************************************************************
 function ErrorHandler(Activu,err)
   ReportStatus("FAULT","Connect Error",err)
-  SetConnectedLED("RED")
   Debug("TCP socket had an error: "..err)
 end
 
@@ -343,7 +313,6 @@ end
 --* Description: What to do when TCP times out
 --********************************************************************************
 function TimeoutHandler(Activu,err)
-  SetConnectedLED("RED")
   ReportStatus("FAULT","TCP Connection Timeout")
   Debug("TCP socket timed out "..err)
 end
@@ -472,21 +441,6 @@ end
 
 
 --********************************************************************************
---* Event Handlers for Controls
---********************************************************************************
-
---********************************************************************************
---* Function: Event Handler for Send String input block
---* Description: Send string from AIS send block to AIS
---********************************************************************************
-editSendStr.EventHandler = function(obj)
-  if obj.String ~= " " then
-    SendCommand(obj.String)
-  end
-end
-
-
---********************************************************************************
 --* Function: disableConnect(object)
 --* Description: Reset number of loginAttempts and Reconnect to AIS
 --********************************************************************************
@@ -520,13 +474,38 @@ function ConnectCheck()
   end
 end
 
+--********************************************************************************
+--* Function: Event Handler for Send String input block
+--* Description: Send string from AIS send block to AIS
+--********************************************************************************
+function StringBlockSend(obj)
+  if obj.String ~= " " then
+    SendCommand(obj.String)
+  end
+end
+
+--********************************************************************************
+--* Event Handlers for Controls
+--********************************************************************************
+
+editIPaddr.EventHandler = TCPConnect
+editAISPort.EventHandler = TCPConnect
+btnReconnect.EventHandler = AIS_Login
+editAISUser.EventHandler = AIS_Login
+editAISPW.EventHandler = AIS_Login
+btnClrFb.EventHandler = ClearFeedback
+btnDisabled.EventHandler = disableConnect
+timer.EventHandler = ConnectCheck
+btnClear.EventHandler = ClearQueue
+QueueTimer.EventHandler  = Queue
+editSendStr.EventHandler = StringBlockSend
+
 
 --********************************************************************************
 --* Function: Initialize()
 --* Description: Initialization code for the plugin
 --********************************************************************************
 function Initialize()
-  ReportStatus("NOTPRESENT","Connection Data Missing")
   IPAddress = editIPaddr.String
   Port = editAISPort.Value
   Activu:Connect(IPAddress,Port)
@@ -539,18 +518,8 @@ function Initialize()
 
   timer:Start(1)
 
-  editIPaddr.EventHandler = TCPConnect
-  editAISPort.EventHandler = TCPConnect
-  btnReconnect.EventHandler = AIS_Login
-  editAISUser.EventHandler = AIS_Login
-  editAISPW.EventHandler = AIS_Login
-  btnClrFb.EventHandler = ClearFeedback
-  btnDisabled.EventHandler = disableConnect
-  timer.EventHandler = ConnectCheck
 
-  QueueTimer.EventHandler  = Queue
-  QueueTimer:Start(1)--Time.Value)
-  btnClear.EventHandler = ClearQueue
+  QueueTimer:Start(0.5)--Time.Value)
 
 
   Notifications.Subscribe( NOTIFICATIONS_LABEL, RXHandler )

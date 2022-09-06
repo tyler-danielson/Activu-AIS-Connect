@@ -21,10 +21,10 @@ if CurrentPage == "Setup" then
   --*********************
   table.insert(graphics,{Type = "GroupBox",Text = "Connection Setup",CornerRadius = 8,StrokeColor = Colors.Yellow,Fill = Colors.DarkGrey,StrokeWidth = 1,Position = {COMMON_MARGIN,69},Size = {185,65},FontSize = 10})
   table.insert(graphics,{Type = "Text",Text = "AIS IP Address:",Position = {COMMON_MARGIN+5,91},Size = {74,16},FontSize = 9,HTextAlign = "Right"})
-  layout["IP_Address"] = {PrettyName = "Input IP Address of Activu ASM",Style = "Text",Position = {89,91},Size = {90,16},FontSize = 10,HTextAlign = "Left"}
+  layout["IPAddress"] = {PrettyName = "Input IP Address of Activu ASM",Style = "Text",Position = {89,91},Size = {90,16},FontSize = 10,HTextAlign = "Left"}
   table.insert(graphics,{Type = "Text",Text = "Port #:",Position = {COMMON_MARGIN+5,112},Size = {74,16},FontSize = 10,HTextAlign = "Right"})
   layout["Port"] = {PrettyName = "Default: 59095",ControlType = "Knob",ControlUnit = "Integer",Min = 0,Max = 65535,Value = 59095, Position = {89,112},Size = {40,16},FontSize = 10,HTextAlign = "Left"}
-  layout["Connected"]={PrettyName="Device~Connected",Style="LED",Color=Colors.Green,OffColor=Colors.Black,UnlinkOffColor=true,Position={163,112},Size={16,16},CornerRadius=8}
+
 
   --*********************
   --* AIS Connect Block *
