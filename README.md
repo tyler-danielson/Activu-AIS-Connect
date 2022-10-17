@@ -1,4 +1,4 @@
-# BasePlugin
+# Acitvu AIS Connect
 
 Use this plugin to connect to and control Activu Vis|Abiilty System via Activu Interface Server (AIS).
 
@@ -42,6 +42,9 @@ This is the same password as for the device's configurator.
 
 #### Status
 Displays the current connection status.
+
+#### Disabled
+Logs out of, and disables the connection with AIS.
 
 ## Support
 

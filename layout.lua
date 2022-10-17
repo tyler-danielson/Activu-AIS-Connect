@@ -33,7 +33,7 @@ if CurrentPage == "Setup" then
   table.insert(graphics,{Type = "Text",Text = "Username:",Position = {COMMON_MARGIN+5,160},Size = {62,16},FontSize = 10,HTextAlign = "Right"})
   table.insert(graphics,{Type = "Text",Text = "Password:",Position = {COMMON_MARGIN+5,182},Size = {62,16},FontSize = 10,HTextAlign = "Right"})
   layout["Username"] = {PrettyName = "AIS Username",Style = "Text",Position = {72,160},Size = {107,16},FontSize = 10}
-  layout["Password"] = {PrettyName = "AIS Password",Style = "Text",Position = {72,182},Size = {107,16},FontSize = 6}
+  layout["Password"] = {PrettyName = "AIS Password",Style = "Text",Position = {72,182},Size = {107,16},FontSize = 10}
   layout["ais_reconnect"] = {PrettyName = "Reconnect",Style = "Button",Position = {41,202},Size = {50,16},Legend = "Reconnect"}
   layout["connect_disabled"] = {PrettyName = "Disabled",Style = "Button",Position = {105,202},Size = {50,16},Legend = "Disabled"}
   layout["Status"] = {PrettyName="Status",Style = "Indicator",Position = {13,226},Size = {169,25},FontSize = 9}

@@ -51,13 +51,12 @@ tick = 0
 timer = Timer.New()
 QueueTimer = Timer.New()
 Activu = TcpSocket.New()
-Activu.ReadTimeout = 0
-Activu.WriteTimeout = 0
+Activu.ReadTimeout = 30
+Activu.WriteTimeout = 30
 Activu.ReconnectTimeout = 5
 loginAttempts = 0
 SendQueue = {}
 DebugFunction=false
-
 
 
 
@@ -72,7 +71,6 @@ DebugFunction=false
 function Debug(response)
   local newString = string.sub(txtDebug.String..'\r\r'..response, DEBUG_WINDOW_SIZE)
   txtDebug.String = newString
-  print(response)
 end
 
 
@@ -95,31 +93,6 @@ end
 
 
 --********************************************************************************
---* Function: CheckIPValid(ip)
---* Description: Check validity of IP address
---********************************************************************************
-function CheckIPValid(ip)
-  local ipValid = true
-  if type(ip) == "string" then
-    -- check for format 1.11.111.111 for ipv4
-    local chunks = {ip:match("^(%d+)%.(%d+)%.(%d+)%.(%d+)$")}
-    if #chunks == 4 then
-      for _,v in pairs(chunks) do
-        if tonumber(v) > 255 then
-          ipValid = false
-        end
-      end
-    else
-      ipValid = false
-    end
-  else
-    ipValid = false
-  end
-  return ipValid
-end
-
-
---********************************************************************************
 --* Function: SendCommand(commandString)
 --* Description: Send string command to AIS
 --********************************************************************************
@@ -129,7 +102,6 @@ function SendCommand(commandString)
   lastCommand = string.sub(commandString, i,j)
   Activu:Write(commandString.."\n")
   Debug('TX: '..commandString:gsub( editAISPW.String, "*****")) --replace password string with Asterisks
-  
 end
 
 --********************************************************************************
@@ -140,11 +112,11 @@ function TCPConnect()
   local IPAddress = editIPaddr.String
   local port = editAISPort.Value
   ClearQueue()
-  --if CheckIPValid(IPAddress) then
   if #IPAddress > 0 then
     InputValid(editIPaddr,true)
     Activu:Connect(IPAddress,port)
   else
+    ReportStatus("MISSING","")
     InputValid(editIPaddr,false)
   end
   
@@ -171,31 +143,6 @@ function AIS_Login()
       SendCommand(loginString)
     end
   end
-end
-
---********************************************************************************
---* Function: CheckIPValid(ip)
---* Description: Check validity of IP address
---* credit:  Chris Lord (QSC)
---********************************************************************************
-function CheckIPValid(ip)
-  local ipValid = true
-  if type(ip) == "string" then
-    -- check for format 1.11.111.111 for ipv4
-    local chunks = {ip:match("^(%d+)%.(%d+)%.(%d+)%.(%d+)$")}
-    if #chunks == 4 then
-      for _,v in pairs(chunks) do
-        if tonumber(v) > 255 then
-          ipValid = false
-        end
-      end
-    else
-      ipValid = false
-    end
-  else
-    ipValid = false
-  end
-  return ipValid
 end
 
 
@@ -275,8 +222,8 @@ end
 function ConnectHandler(Activu)
   InputValid(editIPaddr,true)
   InputValid(editAISPort,true)
-  Debug("TCP socket is connected")
-  if not btnDisabled.Boolean then 
+  if not btnDisabled.Boolean then
+    Debug("TCP socket is connected")
     AIS_Login()
   end
 end
@@ -285,9 +232,11 @@ end
 --* Function: ReconectHandler(connection)
 --* Description: What to do when TCP is Reconnecting
 --********************************************************************************
-function ReconectHandler(Activu)
-  ReportStatus("FAULT","TCP Connection Reconnecting")
-  Debug("TCP socket is reconnecting")
+function ReconnectHandler(Activu)
+  if not btnDisabled.Boolean then
+    ReportStatus("FAULT","TCP Connection Reconnecting")
+    Debug("TCP socket is reconnecting")
+  end
 end
 
 --********************************************************************************
@@ -342,6 +291,7 @@ function ErrorCheck(feedback)
     btnDisabled.Boolean = true
   elseif feedback == OK then
     ReportStatus("OK","Logged In")
+    Debug("AIS is connected")
   end
 end
 
@@ -358,12 +308,12 @@ function ReportStatus(state, msg, debugStr)
       ClearQueue()
       if debugStr ~= nil then
         if debugStr ~= "" then
-          print(debugStr.."-"..msg)
+          if DebugFunction then print(debugStr.."-"..msg) end
         else
-          print(msg)
+          if DebugFunction then print(msg) end
         end
       else
-        print(msg)
+        if DebugFunction then print(msg) end
       end
     end
   end
@@ -450,6 +400,7 @@ function disableConnect(obj)
     loginAttempts = 0
   else
     SendCommand("Logout")
+    Activu:Disconnect()
     ReportStatus("NOTPRESENT","Connection Disabled")
   end
 end
@@ -506,21 +457,18 @@ editSendStr.EventHandler = StringBlockSend
 --* Description: Initialization code for the plugin
 --********************************************************************************
 function Initialize()
-  IPAddress = editIPaddr.String
-  Port = editAISPort.Value
-  Activu:Connect(IPAddress,Port)
+  --IPAddress = editIPaddr.String
+  --Port = editAISPort.Value
+  --Activu:Connect(IPAddress,Port)
   Activu.Connected = ConnectHandler
-  Activu.Reconnect = ReconectHandler
+  Activu.Reconnect = ReconnectHandler
   Activu.Data = DataHandler
   Activu.Closed = ClosedHandler
   Activu.Error = ErrorHandler
   Activu.Timeout = TimeoutHandler
 
   timer:Start(1)
-
-
-  QueueTimer:Start(0.5)--Time.Value)
-
+  QueueTimer:Start(0.5)
 
   Notifications.Subscribe( NOTIFICATIONS_LABEL, RXHandler )
   TCPConnect()
