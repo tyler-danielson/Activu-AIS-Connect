@@ -51,7 +51,7 @@ tick = 0
 timer = Timer.New()
 QueueTimer = Timer.New()
 Activu = TcpSocket.New()
-Activu.ReadTimeout = 30
+Activu.ReadTimeout = 0
 Activu.WriteTimeout = 30
 Activu.ReconnectTimeout = 5
 loginAttempts = 0
@@ -220,7 +220,7 @@ end
 --* Function: ConnectHandler(connection)
 --* Description: What to do when TCP Connects
 --********************************************************************************
-function ConnectHandler()
+function ConnectHandler(Activu)
   InputValid(editIPaddr,true)
   InputValid(editAISPort,true)
   if not btnDisabled.Boolean then
@@ -233,7 +233,7 @@ end
 --* Function: ReconectHandler(connection)
 --* Description: What to do when TCP is Reconnecting
 --********************************************************************************
-function ReconnectHandler()
+function ReconnectHandler(Activu)
   if not btnDisabled.Boolean then
     ReportStatus("FAULT","TCP Connection Reconnecting")
     Debug("TCP socket is reconnecting")
@@ -262,9 +262,9 @@ end
 --* Function: TimeoutHandler(connection)
 --* Description: What to do when TCP times out
 --********************************************************************************
-function TimeoutHandler(Activu,err)
+function TimeoutHandler(Activu)
   ReportStatus("FAULT","TCP Connection Timeout")
-  Debug("TCP socket timed out "..err)
+  Debug("TCP socket timed out")
 end
 
 

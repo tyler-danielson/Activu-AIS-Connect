@@ -7,7 +7,7 @@
 PluginInfo = {
   Name = "Activu~Activu AIS Connect v1.0",
   Version = "1.0",
-  BuildVersion = "1.1.0.19",
+  BuildVersion = "1.1.0.23",
   Id = "Activu Connection Block",
   Author = "Activu",
   Description = "A plugin to interface with Activu Interface Server.  Written by Tyler Danielson for Activu Corp."  
@@ -225,8 +225,8 @@ if Controls then
   timer = Timer.New()
   QueueTimer = Timer.New()
   Activu = TcpSocket.New()
-  Activu.ReadTimeout = 30
-  Activu.WriteTimeout = 30
+  Activu.ReadTimeout = 0
+  Activu.WriteTimeout = 0
   Activu.ReconnectTimeout = 5
   loginAttempts = 0
   SendQueue = {}
@@ -394,7 +394,7 @@ if Controls then
   --* Function: ConnectHandler(connection)
   --* Description: What to do when TCP Connects
   --********************************************************************************
-  function ConnectHandler()
+  function ConnectHandler(Activu)
     InputValid(editIPaddr,true)
     InputValid(editAISPort,true)
     if not btnDisabled.Boolean then
@@ -407,7 +407,7 @@ if Controls then
   --* Function: ReconectHandler(connection)
   --* Description: What to do when TCP is Reconnecting
   --********************************************************************************
-  function ReconnectHandler()
+  function ReconnectHandler(Activu)
     if not btnDisabled.Boolean then
       ReportStatus("FAULT","TCP Connection Reconnecting")
       Debug("TCP socket is reconnecting")
@@ -436,9 +436,9 @@ if Controls then
   --* Function: TimeoutHandler(connection)
   --* Description: What to do when TCP times out
   --********************************************************************************
-  function TimeoutHandler(Activu,err)
+  function TimeoutHandler(Activu)
     ReportStatus("FAULT","TCP Connection Timeout")
-    Debug("TCP socket timed out "..err)
+    Debug("TCP socket timed out")
   end
   
   
