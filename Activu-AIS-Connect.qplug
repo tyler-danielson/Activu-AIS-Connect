@@ -7,7 +7,7 @@
 PluginInfo = {
   Name = "Activu~Activu AIS Connect v1.0",
   Version = "1.0",
-  BuildVersion = "1.1.0.12",
+  BuildVersion = "1.1.0.19",
   Id = "Activu Connection Block",
   Author = "Activu",
   Description = "A plugin to interface with Activu Interface Server.  Written by Tyler Danielson for Activu Corp."  
@@ -283,17 +283,18 @@ if Controls then
   --* Description: Enable TCP Connection
   --********************************************************************************
   function TCPConnect()
-    local IPAddress = editIPaddr.String
-    local port = editAISPort.Value
-    ClearQueue()
-    if #IPAddress > 0 then
-      InputValid(editIPaddr,true)
-      Activu:Connect(IPAddress,port)
-    else
-      ReportStatus("MISSING","")
-      InputValid(editIPaddr,false)
+    if not btnDisabled.Boolean then
+      local IPAddress = editIPaddr.String
+      local port = editAISPort.Value
+      ClearQueue()
+      if #IPAddress > 0 then
+        InputValid(editIPaddr,true)
+        Activu:Connect(IPAddress,port)
+      else
+        ReportStatus("MISSING","")
+        InputValid(editIPaddr,false)
+      end
     end
-    
   end
   
   --********************************************************************************
@@ -301,7 +302,6 @@ if Controls then
   --* Description: Log in to the Activu AIS connection
   --********************************************************************************
   function AIS_Login()
-    lastCommand = "Login"
     if #editAISUser.String < 2 then
       editAISUser.Color = "Red"
     elseif #editAISPW.String < 2 then
@@ -312,6 +312,7 @@ if Controls then
       if Activu.IsConnected then
         local username = editAISUser.String
         local password = editAISPW.String
+        lastCommand = "Login"
         local loginString = "Login," .. username .. "," .. password
         ReportStatus("FAULT","Logging In")
         SendCommand(loginString)
@@ -393,7 +394,7 @@ if Controls then
   --* Function: ConnectHandler(connection)
   --* Description: What to do when TCP Connects
   --********************************************************************************
-  function ConnectHandler(Activu)
+  function ConnectHandler()
     InputValid(editIPaddr,true)
     InputValid(editAISPort,true)
     if not btnDisabled.Boolean then
@@ -406,7 +407,7 @@ if Controls then
   --* Function: ReconectHandler(connection)
   --* Description: What to do when TCP is Reconnecting
   --********************************************************************************
-  function ReconnectHandler(Activu)
+  function ReconnectHandler()
     if not btnDisabled.Boolean then
       ReportStatus("FAULT","TCP Connection Reconnecting")
       Debug("TCP socket is reconnecting")
@@ -570,7 +571,7 @@ if Controls then
   --********************************************************************************
   function disableConnect(obj)
     if not obj.Boolean then
-      AIS_Login()
+      TCPConnect()
       loginAttempts = 0
     else
       SendCommand("Logout")
@@ -615,7 +616,7 @@ if Controls then
   
   editIPaddr.EventHandler = TCPConnect
   editAISPort.EventHandler = TCPConnect
-  btnReconnect.EventHandler = AIS_Login
+  btnReconnect.EventHandler = TCPConnect
   editAISUser.EventHandler = AIS_Login
   editAISPW.EventHandler = AIS_Login
   btnClrFb.EventHandler = ClearFeedback
