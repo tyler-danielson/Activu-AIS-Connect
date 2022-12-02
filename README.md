@@ -1,4 +1,4 @@
-# Acitvu AIS Connect
+# Activu AIS Connect
 
 Use this plugin to connect to and control Activu Vis|Abiilty System via Activu Interface Server (AIS).
 
