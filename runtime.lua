@@ -97,6 +97,7 @@ end
 --* Description: Send string command to AIS
 --********************************************************************************
 function SendCommand(commandString)
+  if DebugFunction then print("SendCommand("..commandString..") Called") end
   local i,j = "",""
   i, j = string.find(commandString,"[^,]+")
   lastCommand = string.sub(commandString, i,j)
@@ -385,10 +386,6 @@ function ClearQueue()
   UpdateQueue()
 end
 
-function SendingCommand()
-  if DebugFunction then print("SendingCommand() Called") end
-end
-
 
 
 --********************************************************************************
@@ -396,6 +393,7 @@ end
 --* Description: Reset number of loginAttempts and Reconnect to AIS
 --********************************************************************************
 function disableConnect(obj)
+  if DebugFunction then print("disableConnect("..obj.Boolean..") Called") end
   if not obj.Boolean then
     TCPConnect()
     loginAttempts = 0
